@@ -1,0 +1,48 @@
+apiVersion: apps/v1            # Uses the Deployment API
+kind: Deployment               # This resource is a Deployment
+metadata:
+  name: hello-green       # Name to refer to this Deployment
+  labels:
+    app: hello                 # A label to group related resources
+    color: green               # A label to distinguish green deployment
+spec:
+  replicas: 3                  # Run 3 identical pods
+  strategy:
+    type: RollingUpdate              # Use rolling updates (the default, but be explicit)
+    rollingUpdate:
+      maxUnavailable: 0              # Keep all 3 pods available during update
+      maxSurge: 1                    # Allow 1 extra pod during rollout (total 4 temporarily)
+  selector:
+    matchLabels:
+      app: hello               # The Deployment manages pods with this label
+      color: green              # The Deployment manages pods with this color label
+  template:                    # The "pod template": what each pod looks like
+    metadata:
+      labels:
+        app: hello             # These labels will be on each created pod
+        color: green            # These labels will be on each created pod
+    spec:
+      containers:
+        - name: hello-container
+          image: node-test/hello-app:v3  # Your image name and tag (change if needed)
+          imagePullPolicy: IfNotPresent  # Use local image if available
+          env:                 # Environment variables passed to your app
+            - name: VERSION
+              value: "v3-green"      # App will respond as version v3
+            - name: PORT
+              value: "3000"    # App listens on port 3000 inside the container
+          ports:
+            - name: http
+              containerPort: 3000  # Kubernetes knows the app listens here
+          readinessProbe:      # Only send traffic when the app is ready
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:       # Restart the pod if the app stops responding
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
