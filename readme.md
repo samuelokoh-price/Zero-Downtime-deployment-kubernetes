@@ -70,7 +70,7 @@ This project demonstrates deploying a simple Node.js application on Kubernetes u
         eval $(minikube docker-env)
         docker build -t node-test/hello-app:v3 .
 
-## Lessons Learned
+## Note
 - Always ensure environment variables match the intended version during rollouts.
 - Build new images inside Minikube’s Docker before deploying.
 - Blue‑green deployment provides instant rollback by flipping Service selectors.
