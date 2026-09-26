@@ -140,6 +140,9 @@ hello-deployment-xxxxx              1/1     Running   0          30s
 At this stage, the objective was simply to establish a healthy application running inside Kubernetes.
 
 ---
+<img width="1920" height="1080" alt="s1" src="https://github.com/user-attachments/assets/70063480-c8a1-4a46-8f2f-213eaf861b4d" />
+
+
 
 # 📈 Stage 2 — Scaling
 
@@ -212,6 +215,9 @@ Pod v2     Pod v2     Pod v2
 `maxUnavailable: 0` ensures Kubernetes does not intentionally reduce the available replica count during the update.
 
 `maxSurge: 1` allows Kubernetes to temporarily create one additional pod while replacing the old pods.
+<img width="1920" height="1080" alt="s6" src="https://github.com/user-attachments/assets/75a5e509-c267-4e13-836b-663c30979e2b" />
+
+
 
 ### Update the image
 
@@ -219,6 +225,8 @@ Pod v2     Pod v2     Pod v2
 kubectl set image deployment/hello-deployment \
   hello-container=node-test/hello-app:v2
 ```
+<img width="1920" height="1080" alt="s5" src="https://github.com/user-attachments/assets/ee9fbf17-ef1c-40f8-ad4f-7f8e72a11563" />
+
 
 ### Monitor the rollout
 
